@@ -25,7 +25,7 @@ THE SOFTWARE.
 import argparse
 import hashlib
 
-VERSION = '0.1'
+VERSION = '0.2'
 VERSION_STR = 'hashy ' + VERSION
 DEFAULT_ALGORITHM = 'sha256'
 
@@ -50,6 +50,7 @@ def hash_file(hash, file):
 def parse_args():
     parser = argparse.ArgumentParser(description='hash a file')
     parser.add_argument('--version', help='print version information', action='version', version=VERSION_STR)
+    parser.add_argument('-verify', type=str, help='compute file hash and compare against passed in hash', metavar='verify')
     parser.add_argument('-hash', type=str, help='hash algorithm to use. can be one of ' + algorithms, metavar='hash', 
 	    default=DEFAULT_ALGORITHM, choices=hashlib.algorithms)
     parser.add_argument('file', type=str, help='file to compute hash')
@@ -57,8 +58,14 @@ def parse_args():
     return parser.parse_args()
         
 if __name__ == '__main__':
-    args = parse_args()
+    args = parse_args()        
     hash = hash_file(args.hash, args.file)
     if hash:
-        print '%s:%s' % (args.hash, hash)
+        if args.verify:
+            if hash == args.verify:
+                print 'ok'
+            else:
+                print 'hashes are not the same!'
+        else:
+            print '%s:%s' % (args.hash, hash)
     
