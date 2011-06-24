@@ -9,6 +9,12 @@ currently supports:
  * sha512
 
 
+hashy has a simple GUI that can be used by just running
+
+python hashy.py
+
+or via the command line
+
 usage: hashy.py [-h] [--version] [-hash hash] file
 
 hash a file
@@ -21,4 +27,5 @@ optional arguments:
   --version   print version information
   -hash hash  hash algorithm to use. can be one of ('md5', 'sha1', 'sha224',
               'sha256', 'sha384', 'sha512')
+
 

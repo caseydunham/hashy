@@ -22,6 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-__version__ = '2.1'
+__version__ = '0.3'
 __author__ = "Casey Dunham"
 __license__ = 'MIT'
+
+import hashlib
+
+VERSION_STR = 'hashy ' + __version__
+DEFAULT_ALGORITHM = 'sha256'
+
+try:
+    algorithms = repr(hashlib.algorithms)
+except AttributeError, e:
+    algorithms = repr(('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512'))
+
+BLOCK_SIZE = 1024
+
+def hash(file, algorithm=DEFAULT_ALGORITHM):
+    """ Read the file and return its hash """
+    h = hashlib.new(algorithm)
+    try:
+        with open(file, 'rb') as f:
+            while True:
+                part = f.read(BLOCK_SIZE)
+                if not part:
+                    break
+                h.update(part)
+        return h.hexdigest()
+    except IOError, reason:
+        print reason
+        return None
+
