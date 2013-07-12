@@ -1,5 +1,5 @@
-==hashy [![endorse](http://api.coderwall.com/caseydunham/endorse.png)](http://coderwall.com/caseydunham) 
-
+hashy [![endorse](http://api.coderwall.com/caseydunham/endorse.png)](http://coderwall.com/caseydunham) 
+==
 
 hashy is a simple wrapper around the python (version 2.7.1 and higher) hashlib module to compute file hashes.   
 currently supports:
@@ -12,8 +12,8 @@ currently supports:
  * sha512
 
 
-==Usage 
-
+Usage 
+==
     hashy.py [-h] [--version] [-hash hash] file
 
     hash a file
@@ -26,8 +26,8 @@ currently supports:
        --version   print version information
        -hash hash  hash algorithm to use. can be one of ('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512')
 
-==License
-
+License
+==
 The MIT License
 
 Copyright (c) 2011 Casey Dunham <casey.dunham@gmail.com>
