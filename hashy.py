@@ -22,23 +22,50 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
+__version__ = '0.4.0'
+__author__ = "Casey Dunham"
+__license__ = 'MIT'
 
 import os
 import sys
 import argparse
-import hashy
+import hashlib
 
-   
+VERSION_STR = 'hashy ' + __version__
+DEFAULT_ALGORITHM = 'sha256'
+
+try:
+    algorithms = repr(hashlib.algorithms)
+except AttributeError, e:
+    algorithms = repr(('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512'))
+
+BLOCK_SIZE = 1024
+
+def hash(file, algorithm=DEFAULT_ALGORITHM):
+    """ Read the file and return its hash """
+    h = hashlib.new(algorithm)
+    try:
+        with open(file, 'rb') as f:
+            while True:
+                part = f.read(BLOCK_SIZE)
+                if not part:
+                    break
+                h.update(part)
+        return h.hexdigest()
+    except IOError, reason:
+        print reason
+        return None
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='hash a file')
-    parser.add_argument('--version', help='print version information', action='version', version=hashy.VERSION_STR)
+    parser.add_argument('--version', help='print version information', action='version', version=VERSION_STR)
     parser.add_argument('-verify', type=str, help='compute file hash and compare against passed in hash', metavar='verify')
-    parser.add_argument('-hash', type=str, help='hash algorithm to use. can be one of ' + hashy.algorithms, metavar='hash',
-        default=hashy.DEFAULT_ALGORITHM, choices=hashy.algorithms)
+    parser.add_argument('-hash', type=str, help='hash algorithm to use. can be one of ' + algorithms, metavar='hash',
+        default=DEFAULT_ALGORITHM, choices=algorithms)
     parser.add_argument('file', type=str, help='file to compute hash')
 
     args = parser.parse_args()
-    h = hashy.hash(args.file, args.hash)
+    h = hash(args.file, args.hash)
     if h:
         if args.verify:
             if h == args.verify:
@@ -47,3 +74,4 @@ if __name__ == '__main__':
                 print 'hashes are not the same!'
         else:
             print '%s:%s' % (args.hash, h)
+
