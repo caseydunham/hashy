@@ -14,20 +14,33 @@ currently supports:
 
 Usage 
 ==
-    hashy.py [-h] [--version] [-hash hash] file
+    hashy.py [-h] [--version] [-hash hash] 'pattern'
 
     hash a file
 
     positional arguments:
-        file        file to compute hash
+        pattern        file glob pattern to compute hashes of (in single quotes)
 
     optional arguments:
        -h, --help  show this help message and exit
        --version   print version information
        -hash hash  hash algorithm to use. can be one of ('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512')
 
+The pattern field can be any valid file python glob pattern. Needs to be surrounded in ' (single quotes)
+
+Example Output
+==
+
+When run, hashy will produce a list of all the files it has hashed to stdout.
+
+    $ python hashy.py '*'
+    sha256 a717b635ea745e4536a0b3b07c8a580c23ea5e2c362820c3389c0de8e59f2e41 hashy.py
+    sha256 d1d068fb37633c2001d10a72e5cb54840b3a6e2f02e60fcca2b95cd5ff8c0a18 README.md
+
+
 License
 ==
+
 The MIT License
 
 Copyright (c) 2011 Casey Dunham <casey.dunham@gmail.com>

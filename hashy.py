@@ -30,6 +30,7 @@ import os
 import sys
 import argparse
 import hashlib
+import glob
 
 VERSION_STR = 'hashy ' + __version__
 DEFAULT_ALGORITHM = 'sha256'
@@ -65,13 +66,15 @@ if __name__ == '__main__':
     parser.add_argument('file', type=str, help='file to compute hash')
 
     args = parser.parse_args()
-    h = hash(args.file, args.hash)
-    if h:
-        if args.verify:
-            if h == args.verify:
-                print 'hashes match'
+    files = glob.glob(args.file)
+    for f in files:
+        h = hash(f, args.hash)
+        if h:
+            if args.verify:
+                if h == args.verify:
+                    print 'hashes match'
+                else:
+                    print 'hashes are not the same!'
             else:
-                print 'hashes are not the same!'
-        else:
-            print '%s:%s' % (args.hash, h)
+                print '%s %s %s' % (args.hash, h, f)
 
