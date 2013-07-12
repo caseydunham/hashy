@@ -66,7 +66,12 @@ if __name__ == '__main__':
     parser.add_argument('file', type=str, help='file to compute hash')
 
     args = parser.parse_args()
-    files = glob.glob(args.file)
+    
+    pattern = args.file
+    if os.path.isdir(pattern):
+        pattern = "%s/*" % args.file
+
+    files = glob.glob(pattern)
     for f in files:
         h = hash(f, args.hash)
         if h:
